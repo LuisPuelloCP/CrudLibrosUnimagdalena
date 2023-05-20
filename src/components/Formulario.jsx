@@ -11,7 +11,7 @@ const Formulario = () => {
     useEffect(()=>{
         const obtenerDatos = async() => {
             try {
-                await onSnapshot(collection(db,'libros'),(query) => {
+                onSnapshot(collection(db,'libros'),(query) => {
                     setListaLibros(query.docs.map((doc)=>({...doc.data(), id:doc.id})))
                 })
             } catch (error) {
@@ -26,6 +26,9 @@ const Formulario = () => {
     const guardarLibros = async (e) =>{
         e.preventDefault()
         try {
+            if (nombreLibro === ""  && nombreAutor === "") {
+                return
+            }
             const data = await addDoc(collection(db, 'libros'),{
                 nombreLibro:nombreLibro,
                 nombreAutor:nombreAutor
@@ -122,7 +125,7 @@ const Formulario = () => {
                         (   
                             <>
                                 <button className="btn btn-warning btn-block">Editar</button>
-                                <button className="btn btn-dark btn-block mx-2" onClick={cancelar}>Cancelar</button>
+                                <button className="btn btn-dark btn-block mx-2" onClick={()=>cancelar()}>Cancelar</button>
                             </>
                             
                         )
